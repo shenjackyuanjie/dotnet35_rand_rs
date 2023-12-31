@@ -17,7 +17,6 @@
 use std::default::Default;
 
 /// .NET 3.5 的 Random 类的常量
-/// 
 /// Constants of .NET 3.5 Random class
 /// 
 /// "万一你真需要修改常量呢?"
@@ -58,12 +57,11 @@ impl Default for DotNet35Const {
 
 
 /// 用于模拟 .NET 3.5 的 Random 类
-/// 
-/// 所有的方法都是公开的, 方便使用 (点名批评某个模拟Java random的库)
-/// 
 /// A struct for simulating the .NET 3.5 Random class
 /// 
-/// All methods are public, just in case.
+/// 所有的方法都是公开的, 以防万一 (点名批评某个模拟Java random的库)
+/// 
+/// All methods are public, just in case you need it
 /// 
 /// 用法 Usage:
 /// ```rust
