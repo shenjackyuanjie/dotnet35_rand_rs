@@ -17,8 +17,11 @@
 use std::default::Default;
 
 /// .NET 3.5 的 Random 类的常量
+/// 
 /// Constants of .NET 3.5 Random class
+/// 
 /// "万一你真需要修改常量呢?"
+/// 
 /// "What if you really need to modify the constants?"
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct DotNet35Const {
