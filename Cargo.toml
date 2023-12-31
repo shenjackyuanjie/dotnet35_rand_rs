@@ -1,8 +1,11 @@
 [package]
 name = "dotnet35_rand_rs"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 license = "WTFPL"
 description = "just simluates .NET 3.5's Random class"
+homepage = "https://github.com/shenjackyuanjie/dotnet35_rand_rs"
+documentation = "https://docs.rs/dotnet35_rand_rs/latest/dotnet35_rand_rs/"
+readme = "README.md"
 
 [dependencies]

@@ -1,5 +1,80 @@
+//! 一个模拟 .NET 3.5 的 Random 类的库
+//! 
+//! A library for simulating the .NET 3.5 Random class
+//! 
+//! 用法 Usage:
+//! ```rust
+//! use dotnet35_rand_rs::DotNet35Random;
+//! 
+//! fn main() {
+//!   let mut rand = DotNet35Random::new(0);
+//!   println!("{}", rand.next());
+//! }
+//! ```
+//! 
+//! by shenjackyuanjie
+
 use std::default::Default;
 
+/// .NET 3.5 的 Random 类的常量
+/// Constants of .NET 3.5 Random class
+/// "万一你真需要修改常量呢?"
+/// "What if you really need to modify the constants?"
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub struct DotNet35Const {
+    pub mz: i32,
+    pub mbig: i32,
+    pub mseed: i32,
+}
+
+impl DotNet35Const {
+    /// "万一你真需要修改常量呢?"
+    /// 
+    /// "What if you really need to modify the constants?"
+    pub fn new(mz: i32, mbig: i32, mseed: i32) -> Self {
+        Self {
+            mz,
+            mbig,
+            mseed,
+        }
+    }
+}
+
+impl Default for DotNet35Const {
+    /// 默认值
+    /// 
+    /// default value
+    fn default() -> Self {
+        Self {
+            mz: 0,
+            mbig: 2147483647,
+            mseed: 161803398,
+        }
+    }
+}
+
+
+/// 用于模拟 .NET 3.5 的 Random 类
+/// 
+/// 所有的方法都是公开的, 方便使用 (点名批评某个模拟Java random的库)
+/// 
+/// A struct for simulating the .NET 3.5 Random class
+/// 
+/// All methods are public, just in case.
+/// 
+/// 用法 Usage:
+/// ```rust
+/// use dotnet35_rand_rs::DotNet35Random;
+/// 
+/// fn main() {
+///    let mut rand = DotNet35Random::new(0);
+///    println!("{}", rand.next());
+/// }
+/// ```
+/// 
+/// 参考源码 Reference source code:
+/// 
+/// ```csharp
 /// using System;
 /// using System.Runtime.InteropServices;
 /// 
@@ -137,63 +212,13 @@ use std::default::Default;
 /// 	// Token: 0x04000307 RID: 775
 /// 	private int[] SeedArray = new int[56];
 /// }
-
-/// .NET 3.5 的 Random 类的常量
-/// Constants of .NET 3.5 Random class
-/// "万一你真需要修改常量呢?"
-/// "What if you really need to modify the constants?"
-pub struct DotNet35Const {
-    pub mz: i32,
-    pub mbig: i32,
-    pub mseed: i32,
-}
-
-impl DotNet35Const {
-    /// "万一你真需要修改常量呢?"
-    /// "What if you really need to modify the constants?"
-    pub fn new(mz: i32, mbig: i32, mseed: i32) -> Self {
-        Self {
-            mz,
-            mbig,
-            mseed,
-        }
-    }
-}
-
-impl Default for DotNet35Const {
-    /// 默认值
-    /// default value
-    fn default() -> Self {
-        Self {
-            mz: 0,
-            mbig: 2147483647,
-            mseed: 161803398,
-        }
-    }
-}
-
-
-/// 用于模拟 .NET 3.5 的 Random 类
-/// 所有的方法都是公开的, 方便使用 (点名批评某个模拟Java random的库)
-/// A struct for simulating the .NET 3.5 Random class
-/// All methods are public, easy to use
-/// 
-/// 用法 Usage:
-/// ```rust
-/// use dotnet35_rand_rs::DotNet35Random;
-/// 
-/// fn main() {
-///    let mut rand = DotNet35Random::new(0);
-///   println!("{}", rand.next());
-/// }
-/// ```
-/// 
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct DotNet35Random {
     /// int next
     pub inext: usize,
     /// int nextp
     pub inextp: usize,
-    /// int[56] SeedArray
+    /// int\[56\] SeedArray
     pub seed_array: [i32; 56],
     /// consts
     pub consts: DotNet35Const,
@@ -201,6 +226,7 @@ pub struct DotNet35Random {
 
 impl DotNet35Random {
     /// 默认的构造函数
+    /// 
     /// default constructor
     pub fn new(seed: i32) -> Self {
         let consts = DotNet35Const::default();
@@ -208,6 +234,7 @@ impl DotNet35Random {
     }
 
     /// "万一你真需要修改常量呢?"
+    /// 
     /// "What if you really need to modify the constants?"
     pub fn new_with_const(seed: i32, consts: DotNet35Const) -> Self {
         let mut seed_array = [0; 56];
@@ -239,7 +266,8 @@ impl DotNet35Random {
         }
     }
 
-    /// protected virtual double Sample()
+    /// `protected virtual double Sample()`
+    /// 
     /// 原始的 Sample 方法
     /// original Sample method
     pub fn sample(&mut self) -> f64 {
@@ -261,14 +289,16 @@ impl DotNet35Random {
         }) as f64 * 4.656612875245797E-10
     }
 
-    /// public virtual int Next()
+    /// `public virtual int Next()`
+    /// 
     /// 默认的 Next 方法
     /// default Next method
     pub fn next(&mut self) -> i32 {
         (self.sample() * 2147483647.0) as i32
     }
 
-    /// public virtual int Next(int maxValue)
+    /// `public virtual int Next(int maxValue)`
+    /// 
     /// 限制最大值的 Next 方法
     /// Next method with max value
     pub fn next_with_max(&mut self, max_value: i32) -> i32 {
@@ -278,7 +308,8 @@ impl DotNet35Random {
         (self.sample() * max_value as f64) as i32
     }
 
-    /// public virtual void NextBytes(byte[] buffer)
+    /// `public virtual void NextBytes(byte[] buffer)`
+    /// 
     /// 返回随机字节的 NextBytes 方法
     /// NextBytes method with random bytes
     pub fn next_bytes(&mut self, buffer: &mut [u8]) {
@@ -287,7 +318,8 @@ impl DotNet35Random {
         }
     }
 
-    /// public virtual double NextDouble()
+    /// `public virtual double NextDouble()`
+    /// 
     /// 返回随机浮点数的 NextDouble 方法
     /// NextDouble method with random double
     pub fn next_double(&mut self) -> f64 {
