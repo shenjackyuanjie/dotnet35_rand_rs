@@ -12,6 +12,9 @@ use dotnet35_rand_rs::DotNet35Random;
 fn main() {
     let mut rng = DotNet35Random::new(123456789);
     println!("{}", rng.next());
+
+    let mut rng_now = DotNet35Random::new_now();
+    println!("{}", rng_now.next());
 }
 ```
 

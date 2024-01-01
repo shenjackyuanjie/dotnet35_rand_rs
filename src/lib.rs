@@ -15,6 +15,7 @@
 //! by shenjackyuanjie
 
 use std::default::Default;
+use std::time::{SystemTime, UNIX_EPOCH};
 
 /// .NET 3.5 的 Random 类的常量
 /// Constants of .NET 3.5 Random class
@@ -234,6 +235,21 @@ impl DotNet35Random {
         DotNet35Random::new_with_const(seed, consts)
     }
 
+    /// `public DotNet35Random() : this(Environment.TickCount)`
+    /// 
+    /// 用当前时间作为种子的构造函数
+    /// Constructor with current time as seed
+    pub fn new_now() -> Self {
+        let consts = DotNet35Const::default();
+        // Environment.TickCount
+        
+        let start = SystemTime::now();
+        let since_the_epoch = start.duration_since(UNIX_EPOCH)
+            .expect("Time went backwards");
+        let tick_count = since_the_epoch.as_millis() as i32;
+        DotNet35Random::new_with_const(tick_count, consts)
+    }
+
     /// "万一你真需要修改常量呢?"
     /// 
     /// "What if you really need to modify the constants?"
@@ -307,6 +323,21 @@ impl DotNet35Random {
             panic!("Max value is less than min value.");
         }
         (self.sample() * max_value as f64) as i32
+    }
+
+    /// `public virtual int Next(int minValue, int maxValue)`
+    /// 
+    /// 限制最大值和最小值的 Next 方法
+    /// Next method with max value and min value
+    pub fn next_in_range(&mut self, min_value: i32, max_value: i32) -> i32 {
+        if min_value > max_value {
+            panic!("Min value is greater than max value.");
+        }
+        let num = max_value - min_value;
+        if num <= 1 {
+            return min_value;
+        }
+        (self.sample() * num as f64) as i32 + min_value
     }
 
     /// `public virtual void NextBytes(byte[] buffer)`
