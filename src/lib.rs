@@ -257,17 +257,19 @@ impl DotNet35Random {
         for i in 1..55 {
             let num3 = 21 * i % 55;
             seed_array[num3] = num2;
-            num2 = num - num2;
+            num2 = num.wrapping_sub(num2);
             if num2 < consts.mz {
-                num2 += consts.mbig;
+                // 可能导致算数溢出, 使用 wrapping_add
+                num2 = num2.wrapping_add(consts.mbig);
             }
             num = seed_array[num3];
         }
         for _ in 1..5 {
-            for k in 1..56 {
-                seed_array[k] -= seed_array[1 + (k + 30) % 55];
+            for k in 1..55 {
+                // 可能导致算数溢出, 使用 wrapping_sub 和 wrapping_add
+                seed_array[k] = seed_array[k].wrapping_sub(seed_array[1 + (k + 30) % 55]);
                 if seed_array[k] < 0 {
-                    seed_array[k] += i32::MAX;
+                    seed_array[k] = seed_array[k].wrapping_add(i32::MAX);
                 }
             }
         }
