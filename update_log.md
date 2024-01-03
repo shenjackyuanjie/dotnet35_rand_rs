@@ -1,3 +1,7 @@
+# 0.1.3
+
+修复了一个 数组溢出错误 (?)
+
 # 0.1.2
 
 补充了 `fn next_in_range(&mut self, min_value: i32, max_value: i32) -> i32`
