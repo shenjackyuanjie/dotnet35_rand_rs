@@ -241,7 +241,7 @@ impl DotNet35Random {
         let start = SystemTime::now();
         let since_the_epoch = start
             .duration_since(UNIX_EPOCH)
-            .expect("Time went backwards");
+            .unwrap_or(std::time::Duration::new(0, 0));
         let tick_count = since_the_epoch.as_millis() as i32;
         DotNet35Random::new_with_const(tick_count, consts)
     }

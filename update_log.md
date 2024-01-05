@@ -1,5 +1,13 @@
 # update log
 
+## 0.1.5
+
+修复了 在 `0.1.4` 中不小心把 for 循环边界修改改错导致的行为不一致
+感谢 @nazo-x1 的 PR
+
+去除了 `new_now` 的 `expect`, 改为 `unwarp_or`
+尽量保证不会出现 panic 问题 
+
 ## 0.1.4
 
 修复了因为算数移除 导致的 panic
