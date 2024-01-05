@@ -265,7 +265,7 @@ impl DotNet35Random {
             num = seed_array[num3];
         }
         for _ in 1..5 {
-            for k in 1..55 {
+            for k in 1..56 {
                 // 可能导致算数溢出, 使用 wrapping_sub 和 wrapping_add
                 seed_array[k] = seed_array[k].wrapping_sub(seed_array[1 + (k + 30) % 55]);
                 if seed_array[k] < 0 {
