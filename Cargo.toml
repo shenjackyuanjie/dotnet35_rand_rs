@@ -1,6 +1,6 @@
 [package]
 name = "dotnet35_rand_rs"
-version = "0.1.5"
+version = "0.2.0"
 edition = "2021"
 license = "WTFPL"
 description = "just simluates .NET 3.5's Random class"

@@ -1,5 +1,20 @@
 # update log
 
+## 0.2.0
+
+使用 @DoubleUTH 提供的 Random 源码重新实现了一部分代码
+参考源码已经复制在注释中
+
+https://github.com/microsoft/referencesource/blob/51cf7850defa8a17d815b4700b67116e3fa283c2/mscorlib/system/random.cs
+
+修复了因为使用反编译源码所导致的行为不一致
+
+https://github.com/DoubleUTH/DSP-Seed-Finder/issues/3#issuecomment-1899478069
+
+添加了新的 `next_f64` `next_i32` `next_u32` `next_u8_vec(len: usize)`
+
+为 Const 和 Random 实现了 `Hash` derive
+
 ## 0.1.5
 
 修复了 在 `0.1.4` 中不小心把 for 循环边界修改改错导致的行为不一致
