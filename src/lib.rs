@@ -411,24 +411,22 @@ impl DotNet35Random {
     /// 原始的 InternalSample 方法
     /// original InternalSample method
     pub fn internal_sample(&mut self) -> i32 {
-        let mut loc_i_next = self.inext;
-        let mut loc_i_nextp = self.inextp;
-        if loc_i_next >= 56 {
-            loc_i_next = 1;
+        self.inext += 1;
+        if self.inext >= 56 {
+            self.inext = 1;
         }
-        if loc_i_nextp >= 56 {
-            loc_i_nextp = 1;
+        self.inextp += 1;
+        if self.inextp >= 56 {
+            self.inextp = 1;
         }
-        let mut ret_val = self.seed_array[loc_i_next] - self.seed_array[loc_i_nextp];
+        let mut ret_val = self.seed_array[self.inext] - self.seed_array[self.inextp];
         if ret_val == self.consts.mbig {
             ret_val -= 1;
         }
         if ret_val < 0 {
-            ret_val += self.consts.mbig;
+            ret_val += i32::MAX;
         }
-        self.seed_array[loc_i_next] = ret_val;
-        self.inext = loc_i_next;
-        self.inextp = loc_i_nextp;
+        self.seed_array[self.inext] = ret_val;
         ret_val
     }
 
@@ -515,8 +513,19 @@ impl DotNet35Random {
 #[test]
 fn create() {
     let mut rand = DotNet35Random::new(0);
-    assert_eq!(rand.next(), 212174631);
-    assert_eq!(rand.next(), 424349262);
+    assert_eq!(rand.next(), 1976681210);
+    assert_eq!(rand.next(), 551155468);
+}
+
+#[test]
+fn verify() {
+    let mut rand = DotNet35Random::new(1919810);
+    assert_eq!(rand.next(), 429045588);
+    assert_eq!(rand.next(), 1732108734);
+    assert_eq!(rand.next(), 970222201);
+    assert_eq!(rand.next(), 369077841);
+    assert_eq!(rand.next_double(), 0.11859490215712921);
+    assert_eq!(rand.next(), 298877408);
 }
 
 #[test]

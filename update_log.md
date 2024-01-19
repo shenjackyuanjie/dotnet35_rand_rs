@@ -1,5 +1,34 @@
 # update log
 
+## 0.2.1
+
+再一次的修复了与 dotnet 3.5 的行为不一致问题
+(这次是我的问题, 忽略了一个 `++`)
+
+```diff
+pub fn internal_sample(&mut self) -> i32 {
++   self.inext += 1;
+    if self.inext >= 56 {
+        self.inext = 1;
+    }
++   self.inextp += 1;
+    if self.inextp >= 56 {
+        self.inextp = 1;
+    }
+    let mut ret_val = self.seed_array[self.inext] - self.seed_array[self.inextp];
+    if ret_val == self.consts.mbig {
+        ret_val -= 1;
+    }
+    if ret_val < 0 {
+        ret_val += i32::MAX;
+    }
+    self.seed_array[self.inext] = ret_val;
+    ret_val
+}
+```
+
+添加了新的一致性测试
+
 ## 0.2.0
 
 使用 @DoubleUTH 提供的 Random 源码重新实现了一部分代码
