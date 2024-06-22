@@ -1,5 +1,10 @@
 # update log
 
+## 1.0.0
+
+反正没人报 issue, 就直接 1.0.0 了
+无修改
+
 ## 0.2.1
 
 再一次的修复了与 dotnet 3.5 的行为不一致问题
@@ -50,7 +55,7 @@ https://github.com/DoubleUTH/DSP-Seed-Finder/issues/3#issuecomment-1899478069
 感谢 @nazo-x1 的 PR
 
 去除了 `new_now` 的 `expect`, 改为 `unwarp_or`
-尽量保证不会出现 panic 问题 
+尽量保证不会出现 panic 问题
 
 ## 0.1.4
 
