@@ -1,5 +1,10 @@
 # update log
 
+## 1.0.1
+
+感谢 【@szabgab](https://github.com/szabgab) 的 PR
+在 Cargo.toml 中添加了 `repository` 字段
+
 ## 1.0.0
 
 反正没人报 issue, 就直接 1.0.0 了
