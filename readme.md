@@ -20,8 +20,6 @@ fn main() {
 
 ## 注意 Notice
 
-这个库就是一个 GitHub Copilot 作品
-如果你在意,请不要使用,自己写一个去吧
+这个库就是一个 GitHub Copilot 作品, 如果你在意,请不要使用,自己写一个去吧
 
-This library is just a GitHub Copilot work
-If you care, please don't use it, write one yourself
+This library is just a GitHub Copilot work, If you care, please don't use it, write one yourself
