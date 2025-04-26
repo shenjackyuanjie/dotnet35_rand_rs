@@ -6,10 +6,9 @@
 //! ```rust
 //! use dotnet35_rand_rs::DotNet35Random;
 //!
-//! fn main() {
-//!   let mut rand = DotNet35Random::new(0);
-//!   println!("{}", rand.next());
-//! }
+//! let mut rand = DotNet35Random::new(0);
+//! println!("{}", rand.next());
+//!
 //! ```
 //!
 //! by shenjackyuanjie
@@ -31,11 +30,22 @@ pub struct DotNet35Const {
 }
 
 impl DotNet35Const {
+    /// 默认的种子
+    pub const DEFAULT_MSEED: i32 = 161803398;
+
     /// "万一你真需要修改常量呢?"
     ///
     /// "What if you really need to modify the constants?"
-    pub fn new(mz: i32, mbig: i32, mseed: i32) -> Self {
+    pub const fn new(mz: i32, mbig: i32, mseed: i32) -> Self {
         Self { mz, mbig, mseed }
+    }
+
+    pub const fn new_default() -> Self {
+        Self {
+            mz: 0,
+            mbig: i32::MAX,
+            mseed: Self::DEFAULT_MSEED,
+        }
     }
 }
 
@@ -44,11 +54,7 @@ impl Default for DotNet35Const {
     ///
     /// default value
     fn default() -> Self {
-        Self {
-            mz: 0,
-            mbig: i32::MAX,
-            mseed: 161803398,
-        }
+        Self::new_default()
     }
 }
 
@@ -63,24 +69,22 @@ impl Default for DotNet35Const {
 /// ```rust
 /// use dotnet35_rand_rs::DotNet35Random;
 ///
-/// fn main() {
-///    let mut rand = DotNet35Random::new(0);
-///    println!("{}", rand.next());
-/// }
+/// let mut rand = DotNet35Random::new(0);
+/// println!("{}", rand.next());
 /// ```
 ///
 /// 参考源码 Reference source code:
 /// 感谢 @DoubleUTH 提供的微软源码的链接
 /// Thanks to @DoubleUTH for providing the link to the Microsoft source code
-/// 
+///
 /// 请注意, 这里的源码进行了二次格式化, 看着好看一些, 其余没有修改
 /// Notice: The source code here has been formatted twice to make it look better, and the rest has not been modified
 /// https://github.com/microsoft/referencesource/blob/51cf7850defa8a17d815b4700b67116e3fa283c2/mscorlib/system/random.cs
 /// ```csharp
 /// // ==++==
-/// // 
+/// //
 /// //   Copyright (c) Microsoft Corporation.  All rights reserved.
-/// // 
+/// //
 /// // ==--==
 /// /*============================================================
 /// **
@@ -89,7 +93,7 @@ impl Default for DotNet35Const {
 /// **
 /// ** Purpose: A random number generator.
 /// **
-/// ** 
+/// **
 /// ===========================================================*/
 /// namespace System
 /// {
@@ -103,7 +107,7 @@ impl Default for DotNet35Const {
 ///     public class Random
 ///     {
 ///         //
-///         // Private Constants 
+///         // Private Constants
 ///         //
 ///         private const int MBIG = Int32.MaxValue;
 ///         private const int MSEED = 161803398;
@@ -117,7 +121,7 @@ impl Default for DotNet35Const {
 ///         //
 ///         // Constructors
 ///         //
-/// 
+///
 ///         public Random()
 ///           : this(Environment.TickCount)
 ///         {
@@ -126,7 +130,7 @@ impl Default for DotNet35Const {
 ///         {
 ///             int ii;
 ///             int mj, mk;
-/// 
+///
 ///             //Initialize our Seed array.
 ///             //This algorithm comes from Numerical Recipes in C (2nd Ed.)
 ///             int subtraction = (Seed == Int32.MinValue) ? Int32.MaxValue : Math.Abs(Seed);
@@ -173,25 +177,25 @@ impl Default for DotNet35Const {
 ///             int retVal;
 ///             int locINext = inext;
 ///             int locINextp = inextp;
-/// 
+///
 ///             if (++locINext >= 56) locINext = 1;
 ///             if (++locINextp >= 56) locINextp = 1;
-/// 
+///
 ///             retVal = SeedArray[locINext] - SeedArray[locINextp];
-/// 
+///
 ///             if (retVal == MBIG) retVal--;
 ///             if (retVal < 0) retVal += MBIG;
-/// 
+///
 ///             SeedArray[locINext] = retVal;
-/// 
+///
 ///             inext = locINext;
 ///             inextp = locINextp;
-/// 
+///
 ///             return retVal;
 ///         }
 ///         //
 ///         // Public Instance Methods
-///         // 
+///         //
 ///         /*=====================================Next=====================================
 ///         **Returns: An int [0..Int32.MaxValue)
 ///         **Arguments: None
@@ -203,11 +207,11 @@ impl Default for DotNet35Const {
 ///         }
 ///         private double GetSampleForLargeRange()
 ///         {
-///             // The distribution of double value returned by Sample 
+///             // The distribution of double value returned by Sample
 ///             // is not distributed well enough for a large range.
 ///             // If we use Sample for a range [Int32.MinValue..Int32.MaxValue)
 ///             // We will end up getting even numbers only.
-/// 
+///
 ///             int result = InternalSample();
 ///             // Note we can't use addition here. The distribution will be bad if we do that.
 ///             bool negative = (InternalSample() % 2 == 0) ? true : false;  // decide the sign based on second sample
@@ -233,7 +237,7 @@ impl Default for DotNet35Const {
 ///                 throw new ArgumentOutOfRangeException("minValue", Environment.GetResourceString("Argument_MinMaxValue", "minValue", "maxValue"));
 ///             }
 ///             Contract.EndContractBlock();
-/// 
+///
 ///             long range = (long)maxValue - minValue;
 ///             if (range <= (long)Int32.MaxValue)
 ///             {
@@ -369,15 +373,15 @@ impl DotNet35Random {
     }
 
     /// `private double GetSampleForLargeRange()`
-    /// 
+    ///
     /// 原始的 GetSampleForLargeRange 方法
     /// original GetSampleForLargeRange method
-    /// 
+    ///
     /// 源码注释翻译:
     /// Sample 返回的 double 值的分布对于大范围来说不够好
     /// 如果我们使用 Sample 来生成 [Int32.MinValue..Int32.MaxValue) 的范围
     /// 我们将只会得到偶数
-    /// 
+    ///
     /// Source code comment:
     /// The distribution of double value returned by Sample
     /// is not distributed well enough for a large range.
@@ -399,7 +403,7 @@ impl DotNet35Random {
     }
 
     /// `protected virtual double Sample()`
-    /// 
+    ///
     /// 原始的 Sample 方法
     /// original Sample method
     pub fn sample(&mut self) -> f64 {
@@ -434,6 +438,7 @@ impl DotNet35Random {
     ///
     /// 默认的 Next 方法
     /// default Next method
+    #[allow(clippy::should_implement_trait)]
     pub fn next(&mut self) -> i32 {
         self.internal_sample()
     }
@@ -453,15 +458,15 @@ impl DotNet35Random {
     ///
     /// 限制最大值和最小值的 Next 方法
     /// Next method with max value and min value
-    pub fn next_in_range(&mut self, min_value: i32, max_value: i32) -> i32 {
+    pub fn next_in_range(&mut self, min_value: i32, max_value: i32) -> Option<i32> {
         if min_value > max_value {
-            panic!("Min value is greater than max value, not {} and {}", min_value, max_value);
+            return None;
         }
         let range = max_value as i64 - min_value as i64;
         if range <= i32::MAX as i64 {
-            (self.sample() * range as f64) as i32 + min_value
+            Some((self.sample() * range as f64) as i32 + min_value)
         } else {
-            (self.get_sample_for_large_range() * range as f64) as i32 + min_value
+            Some((self.get_sample_for_large_range() * range as f64) as i32 + min_value)
         }
     }
 
@@ -470,9 +475,9 @@ impl DotNet35Random {
     /// 返回随机字节的 NextBytes 方法
     /// NextBytes method with random bytes
     pub fn next_bytes(&mut self, buffer: &mut [u8]) {
-        for i in 0..buffer.len() {
+        (0..buffer.len()).for_each(|i| {
             buffer[i] = (self.internal_sample() % u8::MAX as i32) as u8;
-        }
+        });
     }
 
     /// `public virtual double NextDouble()`
@@ -534,6 +539,6 @@ fn create_now() {
     for _ in 0..100 {
         assert!(rand.next_with_max(1000) < 1000);
         let next = rand.next_in_range(1000, 2000);
-        assert!(next >= 1000 && next < 2000);
+        assert!((1000..2000).contains(&next));
     }
 }

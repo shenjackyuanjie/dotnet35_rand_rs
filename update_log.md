@@ -1,5 +1,12 @@
 # update log
 
+## 2.0.0
+
+BREAKING CHANGE
+- `next_in_range` 函数返回值修改为 `Option<i32>`
+  - 这样就不会 panic 了
+
+
 ## 1.0.1
 
 感谢 【@szabgab](https://github.com/szabgab) 的 PR
