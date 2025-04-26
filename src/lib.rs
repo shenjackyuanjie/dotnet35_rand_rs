@@ -447,11 +447,12 @@ impl DotNet35Random {
     ///
     /// 限制最大值的 Next 方法
     /// Next method with max value
-    pub fn next_with_max(&mut self, max_value: i32) -> i32 {
+    pub fn next_with_max(&mut self, max_value: i32) -> Option<i32> {
         if max_value < self.consts.mz {
-            panic!("Max value is less than min value, not {}", max_value);
+            None
+        } else {
+            Some((self.sample() * max_value as f64) as i32)
         }
-        (self.sample() * max_value as f64) as i32
     }
 
     /// `public virtual int Next(int minValue, int maxValue)`

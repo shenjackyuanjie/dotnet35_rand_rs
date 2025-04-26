@@ -5,7 +5,10 @@
 BREAKING CHANGE
 - `next_in_range` 函数返回值修改为 `Option<i32>`
   - 这样就不会 panic 了
+- `next_with_max` 函数返回值修改为 `Option<i32>`
+  - 这样就不会 panic 了
 
+将 `DotNet35Const` 的 `new` `new_default` 函数改为 `const fn`
 
 ## 1.0.1
 
