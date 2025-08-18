@@ -1,1 +1,3 @@
 target
+# this is a lib (well, no dep)
+Cargo.lock

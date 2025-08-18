@@ -538,8 +538,8 @@ fn verify() {
 fn create_now() {
     let mut rand = DotNet35Random::new_now();
     for _ in 0..100 {
-        assert!(rand.next_with_max(1000) < 1000);
-        let next = rand.next_in_range(1000, 2000);
+        assert!(rand.next_with_max(1000).unwrap() < 1000);
+        let next = rand.next_in_range(1000, 2000).unwrap();
         assert!((1000..2000).contains(&next));
     }
 }

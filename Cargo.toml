@@ -1,8 +1,11 @@
 [package]
 name = "dotnet35_rand_rs"
-version = "1.0.3"
-edition = "2021"
+version = "1.0.4"
+edition = "2024"
 license = "WTFPL"
+authors = [
+    "shenjackyuanjie <3695888@qq.com>"
+]
 description = "just simluates .NET 3.5's Random class"
 homepage = "https://github.com/shenjackyuanjie/dotnet35_rand_rs"
 repository = "https://github.com/shenjackyuanjie/dotnet35_rand_rs"
